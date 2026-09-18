@@ -227,7 +227,7 @@
   }
 
   section {
-    scroll-margin-block-start: 1.5rem;
+    scroll-margin-block-start: 5rem;
   }
 
   @media (width >= 1024px) {
