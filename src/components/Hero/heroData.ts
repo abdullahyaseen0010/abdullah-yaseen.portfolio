@@ -1,7 +1,7 @@
 import { Variants } from 'framer-motion'
 
 // Server-safe data for Hero section
-export const roles = ['FULLSTACK DEVELOPER', 'INDIE HACKER', 'SOLOPRENEUR']
+export const roles = ['FULLSTACK DEVELOPER']
 
 // Animation variants (can be imported by client components)
 export const containerVariants: Variants = {
