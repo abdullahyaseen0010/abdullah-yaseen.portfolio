@@ -2,7 +2,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 interface Particle {
   id: number;
@@ -17,12 +16,11 @@ interface FloatingParticlesProps {
   count?: number;
 }
 
-const FloatingParticles = ({ count = 20 }: FloatingParticlesProps) => {
+const FloatingParticles = ({ count = 14 }: FloatingParticlesProps) => {
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Generate particles only on client side
+    // Generate particles only on client side to avoid hydration mismatch
     const generatedParticles = Array.from({ length: count }, (_, i) => ({
       id: i,
       size: Math.random() * 4 + 2,
@@ -31,23 +29,17 @@ const FloatingParticles = ({ count = 20 }: FloatingParticlesProps) => {
       duration: 3 + Math.random() * 2,
       xOffset: Math.random() * 100 - 50,
     }));
-    
+
     setParticles(generatedParticles);
-    setMounted(true);
   }, [count]);
 
   return (
     <>
       {/* Gradient overlay */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5 }}
-        className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-secondary/20 pointer-events-none"
-      />
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-secondary/20 pointer-events-none animate-fade-in" />
 
       {/* Grid pattern */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px)',
@@ -58,22 +50,10 @@ const FloatingParticles = ({ count = 20 }: FloatingParticlesProps) => {
       />
 
       {/* Floating particles */}
-      {mounted && particles.map((particle) => (
-        <motion.div
+      {particles.map((particle) => (
+        <div
           key={particle.id}
-          initial={{ opacity: 0 }}
-          animate={{
-            opacity: [0, 0.6, 0],
-            y: [0, -100],
-            x: particle.xOffset,
-          }}
-          transition={{
-            duration: particle.duration,
-            repeat: Infinity,
-            delay: particle.delay,
-            ease: 'linear',
-          }}
-          className="absolute rounded-full pointer-events-none"
+          className="particle-float absolute rounded-full pointer-events-none"
           style={{
             width: particle.size,
             height: particle.size,
@@ -81,6 +61,9 @@ const FloatingParticles = ({ count = 20 }: FloatingParticlesProps) => {
             bottom: 0,
             background: 'linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end))',
             boxShadow: '0 0 10px var(--a)',
+            ['--particle-x' as string]: `${particle.xOffset}px`,
+            ['--particle-duration' as string]: `${particle.duration}s`,
+            ['--particle-delay' as string]: `${particle.delay}s`,
           }}
         />
       ))}
