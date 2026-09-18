@@ -23,7 +23,7 @@ export const socialLinks: SocialLink[] = [
   {
     name: 'LinkedIn',
     icon: Linkedin,
-    href: 'https://www.linkedin.com/in/abdullah-yaseen-shaffi',
+    href: 'https://www.linkedin.com/in/abdullah-shaffi',
     color: '#0077B5'
   },
   {

@@ -90,7 +90,7 @@ const HeroContent = ({
         </motion.a>
 
         <motion.a
-          href="https://linkedin.com/in/abdullahyaseen"
+              href="https://linkedin.com/in/abdullah-shaffi"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}
