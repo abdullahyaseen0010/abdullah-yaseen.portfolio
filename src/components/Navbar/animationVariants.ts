@@ -1,5 +1,3 @@
-import { Variants } from 'framer-motion'
-
 // Reusable animation variants for all components
 export const menuVariants = {
   closed: {
