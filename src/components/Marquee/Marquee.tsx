@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useAnimationFrame } from 'framer-motion'
 import { LucideIcon } from 'lucide-react'
 
@@ -13,18 +13,21 @@ interface MarqueeProps {
   items: MarqueeItem[]
   speed?: number
   direction?: 'left' | 'right'
+  pauseOnHover?: boolean
 }
 
 const Marquee = ({
   items,
   speed = 40,
   direction = 'left',
+  pauseOnHover = false,
 }: MarqueeProps) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const xPos = useRef(0)
+  const [isPaused, setIsPaused] = useState(false)
 
   useAnimationFrame((_, delta) => {
-    if (!contentRef.current) return
+    if (!contentRef.current || (pauseOnHover && isPaused)) return
 
     const velocity = direction === 'left' ? -speed : speed
     xPos.current += (velocity * delta) / 1000
@@ -41,8 +44,12 @@ const Marquee = ({
   })
 
   return (
-    <div className="relative overflow-hidden">
-      <div ref={contentRef} className="flex w-max">
+    <div
+      className="relative overflow-hidden"
+      onMouseEnter={() => pauseOnHover && setIsPaused(true)}
+      onMouseLeave={() => pauseOnHover && setIsPaused(false)}
+    >
+      <div ref={contentRef} className="flex w-max gap-6">
         {/* Original content */}
         <div className="flex shrink-0 items-center gap-6 lg:gap-8">
           {items.map((item, index) => {

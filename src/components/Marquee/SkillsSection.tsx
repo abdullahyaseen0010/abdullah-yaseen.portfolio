@@ -6,7 +6,7 @@ import { allSkills } from './skillsData'
 const SkillsSection = () => {
   return (
     <section className="bg-marquee relative py-12 lg:py-16">
-      <div className="mx-auto max-w-[1200px] px-4">
+      <div className="mx-auto max-w-300 px-4">
         <div className="mb-8 text-center">
           <h2 className="text-primary-content mb-3 text-3xl font-bold lg:text-4xl">
             Skills & Technologies
@@ -19,8 +19,8 @@ const SkillsSection = () => {
         <Marquee 
           items={allSkills} 
           speed={40} 
-          pauseOnHover={true}
           direction="left"
+          pauseOnHover={true}
         />
       </div>
     </section>

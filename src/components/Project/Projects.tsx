@@ -7,7 +7,7 @@ import { projects } from './projectss';
 
 const Projects = () => {
   return (
-    <section id="projects" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-[1200px] mx-auto scroll-mt-16">
+    <section id="projects" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 scroll-mt-16">
       <SectionHeader 
         iconName="Code2"
         label="Portfolio"

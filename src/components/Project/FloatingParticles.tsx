@@ -36,7 +36,7 @@ const FloatingParticles = ({ count = 14 }: FloatingParticlesProps) => {
   return (
     <>
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-secondary/20 pointer-events-none animate-fade-in" />
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-secondary/20 pointer-events-none max-w-[1200px] mx-auto animate-fade-in" />
 
       {/* Grid pattern */}
       <div
