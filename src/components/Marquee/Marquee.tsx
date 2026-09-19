@@ -51,7 +51,7 @@ const Marquee = ({
     >
       <div ref={contentRef} className="flex w-max">
         {/* Original content */}
-        <div className="flex shrink-0 items-center gap-4 lg:gap-6">
+        <div className="flex shrink-0 items-center gap-6 lg:gap-8">
           {items.map((item, index) => {
             const Icon = item.icon
             return (
@@ -69,7 +69,7 @@ const Marquee = ({
         </div>
 
         {/* Duplicate for seamless loop */}
-        <div className="flex shrink-0 items-center gap-4 lg:gap-6" aria-hidden="true">
+        <div className="flex shrink-0 items-center gap-6 lg:gap-8" aria-hidden="true">
           {items.map((item, index) => {
             const Icon = item.icon
             return (
