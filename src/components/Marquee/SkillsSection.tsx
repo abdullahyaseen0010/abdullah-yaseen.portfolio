@@ -22,10 +22,6 @@ const SkillsSection = () => {
           pauseOnHover={true}
           direction="left"
         />
-
-        <p className="text-tertiary-content mt-6 text-center text-sm opacity-60">
-          Hover to pause
-        </p>
       </div>
     </section>
   )
