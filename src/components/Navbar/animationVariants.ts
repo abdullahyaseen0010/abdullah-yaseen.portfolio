@@ -1,3 +1,4 @@
+
 // Reusable animation variants for all components
 export const menuVariants = {
   closed: {
