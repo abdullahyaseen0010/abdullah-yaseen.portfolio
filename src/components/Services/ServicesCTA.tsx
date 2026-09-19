@@ -20,17 +20,18 @@ const ServicesCTA = () => {
       >
         {servicesCTA.text}
       </p>
-      <motion.button
+      <motion.a
+        href="#contact"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="px-8 py-3 rounded-full font-semibold text-black transition-all"
+        className="inline-block px-8 py-3 rounded-full font-semibold text-black transition-all"
         style={{
           background: 'linear-gradient(135deg, var(--gradient-start), var(--gradient-end))',
           boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
         }}
       >
         {servicesCTA.buttonText}
-      </motion.button>
+      </motion.a>
     </motion.div>
   );
 };
