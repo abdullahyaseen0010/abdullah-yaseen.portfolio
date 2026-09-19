@@ -61,20 +61,20 @@ const ContactInfoCard = () => {
             >
               {item.icon}
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
               <p className="text-xs font-medium mb-1" style={{ color: 'var(--color-tertiary-content)' }}>
                 {item.label}
               </p>
               {item.href ? (
                 <a 
                   href={item.href}
-                  className="text-sm font-medium hover:opacity-80 transition-opacity"
+                  className="text-sm font-medium hover:opacity-80 transition-opacity break-all"
                   style={{ color: 'var(--color-primary-content)' }}
                 >
                   {item.value}
                 </a>
               ) : (
-                <p className="text-sm font-medium" style={{ color: 'var(--color-primary-content)' }}>
+                <p className="text-sm font-medium break-words" style={{ color: 'var(--color-primary-content)' }}>
                   {item.value}
                 </p>
               )}
