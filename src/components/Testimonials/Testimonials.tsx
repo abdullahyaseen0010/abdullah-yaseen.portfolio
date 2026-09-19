@@ -31,8 +31,8 @@ const testimonials: Testimonial[] = [
     role: 'Senior Developer',
     company: 'Tech Solutions Ltd',
     rating: 5,
-    text: "Working with Abdullah on our e-commerce platform was a pleasure. His expertise in TailwindCSS and responsive design helped us create a beautiful, user-friendly interface. He's quick to understand requirements.",
-    project: 'E-commerce Platform',
+    text: "Working with Abdullah on our ecommerce platform was a pleasure. His expertise in TailwindCSS and responsive design helped us create a beautiful, userfriendly interface. He's quick to understand requirements.",
+    project: 'Ecommerce Platform',
   },
   {
     id: 3,
@@ -49,7 +49,7 @@ const testimonials: Testimonial[] = [
     role: 'UI/UX Designer',
     company: 'Creative Studios',
     rating: 5,
-    text: "Abdullah has an excellent eye for design implementation. He translated our Figma designs into pixel-perfect, responsive websites. His understanding of modern CSS and TailwindCSS made the collaboration seamless. Highly recommend!",
+    text: "Abdullah has an excellent eye for design implementation. He translated our Figma designs into pixelperfect, responsive websites. His understanding of modern CSS and TailwindCSS made the collaboration seamless. Highly recommend!",
     project: 'Portfolio Website',
   },
   {
@@ -67,7 +67,7 @@ const testimonials: Testimonial[] = [
     role: 'Marketing Director',
     company: 'Growth Agency',
     rating: 5,
-    text: "We needed a fast, responsive website for our marketing campaigns, and Abdullah delivered perfectly. His expertise in React and TailwindCSS resulted in a beautiful, high-performing site that converted visitors effectively.",
+    text: "We needed a fast, responsive website for our marketing campaigns, and Abdullah delivered perfectly. His expertise in React and TailwindCSS resulted in a beautiful, highperforming site that converted visitors effectively.",
     project: 'Marketing Website',
   },
 ];
