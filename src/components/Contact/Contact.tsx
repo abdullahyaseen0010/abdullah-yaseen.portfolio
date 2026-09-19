@@ -6,7 +6,7 @@ import ContactHeader from './ContactHeader';
 
 const Contact = () => {
   return (
-    <section id="contact" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section id="contact" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden scroll-mt-16">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
         <div 
