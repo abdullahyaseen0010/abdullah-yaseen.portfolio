@@ -47,7 +47,13 @@ const HeroContent = ({
             className="text-neutral block text-4xl font-bold lg:text-5xl"
           >
             Hi, I&#39;m{' '}
-            <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  'linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end))',
+              }}
+            >
               Abdullah Yaseen
             </span>
           </motion.span>
@@ -90,7 +96,7 @@ const HeroContent = ({
         </motion.a>
 
         <motion.a
-              href="https://linkedin.com/in/abdullah-shaffi"
+          href="https://linkedin.com/in/abdullahyaseen"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}
