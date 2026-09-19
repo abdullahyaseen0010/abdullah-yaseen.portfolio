@@ -7,7 +7,7 @@ import ServicesBackground from './ServicesBackground';
 
 const Services = () => {
   return (
-    <section id="services" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section id="services" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden scroll-mt-16">
       {/* Animated Background */}
       <ServicesBackground />
 
