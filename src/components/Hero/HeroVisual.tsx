@@ -22,6 +22,7 @@ const HeroVisual = () => {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        style={{ willChange: 'transform' }}
         className="absolute inset-0 flex items-center justify-center"
       >
         <div className="from-accent/30 via-secondary/20 to-accent/30 h-[300px] w-[300px] rounded-full bg-gradient-to-br lg:h-[450px] lg:w-[450px]" />
@@ -30,6 +31,7 @@ const HeroVisual = () => {
       <motion.div
         animate={{ rotate: -360 }}
         transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+        style={{ willChange: 'transform' }}
         className="absolute inset-0"
       >
         <div className="relative h-full w-full">
@@ -54,7 +56,7 @@ const HeroVisual = () => {
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="bg-secondary border-border text-accent rounded-xl border p-3 shadow-lg backdrop-blur-sm"
+                  className="bg-secondary border-border text-accent rounded-xl border p-3 shadow-lg"
                 >
                   <Icon className="h-6 w-6" />
                 </motion.div>
@@ -72,15 +74,15 @@ const HeroVisual = () => {
       >
         <motion.div
           animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.5, 0.8, 0.5],
+            opacity: [0.4, 0.7, 0.4],
           }}
           transition={{
             duration: 2,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="from-accent to-secondary absolute inset-0 rounded-full bg-gradient-to-br opacity-50 blur-xl"
+          style={{ willChange: 'opacity' }}
+          className="from-accent to-secondary absolute inset-0 rounded-full bg-gradient-to-br blur-xl"
         />
 
         <div className="bg-primary relative flex h-[180px] w-[180px] items-center justify-center rounded-full lg:h-[260px] lg:w-[260px]">
