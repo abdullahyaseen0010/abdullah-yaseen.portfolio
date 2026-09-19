@@ -104,7 +104,7 @@ const TestimonialMarquee = ({ speed = 30, pauseOnHover = true }: TestimonialMarq
     >
       <div ref={contentRef} className="flex w-max">
         {/* Original content */}
-        <div className="flex shrink-0 items-stretch gap-4 lg:gap-6">
+        <div className="flex shrink-0 items-stretch gap-6 lg:gap-8">
           {testimonials.map((testimonial) => (
             <div
               key={`testimonial-${testimonial.id}`}
@@ -171,7 +171,7 @@ const TestimonialMarquee = ({ speed = 30, pauseOnHover = true }: TestimonialMarq
         </div>
 
         {/* Duplicate for seamless loop */}
-        <div className="flex shrink-0 items-stretch gap-4 lg:gap-6" aria-hidden="true">
+        <div className="flex shrink-0 items-stretch gap-6 lg:gap-8" aria-hidden="true">
           {testimonials.map((testimonial) => (
             <div
               key={`testimonial-duplicate-${testimonial.id}`}
