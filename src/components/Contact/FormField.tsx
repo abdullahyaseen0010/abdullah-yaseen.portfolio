@@ -1,7 +1,6 @@
-// app/components/contact/FormField.tsx (Client Component)
 'use client'
 
-import React from 'react';
+import type { ChangeEvent } from 'react';
 import { motion } from 'framer-motion';
 import { User, Mail, MessageSquare, AlertCircle } from 'lucide-react';
 
@@ -11,7 +10,7 @@ interface FormFieldProps {
   type: 'text' | 'email' | 'textarea';
   name: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onFocus: () => void;
   onBlur: () => void;
   placeholder: string;
@@ -21,7 +20,7 @@ interface FormFieldProps {
   rows?: number;
 }
 
-const FormField: React.FC<FormFieldProps> = ({
+const FormField = ({
   id,
   label,
   type,
@@ -35,7 +34,7 @@ const FormField: React.FC<FormFieldProps> = ({
   isFocused,
   icon,
   rows = 4,
-}) => {
+}: FormFieldProps) => {
   const getIcon = () => {
     switch (icon) {
       case 'user':

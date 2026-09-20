@@ -1,5 +1,3 @@
-// components/projects/SectionHeader.tsx (Server Component)
-import React from 'react';
 import AnimatedHeader from './AnimatedHeader';
 
 interface SectionHeaderProps {

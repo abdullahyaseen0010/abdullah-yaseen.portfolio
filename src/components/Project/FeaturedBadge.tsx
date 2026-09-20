@@ -1,7 +1,5 @@
-// components/projects/FeaturedBadge.tsx (Client Component)
 'use client'
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
 

@@ -1,7 +1,6 @@
-// components/projects/ProjectsGrid.tsx (Client Component)
 'use client'
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Project } from './project';
 import ProjectCard from './ProjectCard';

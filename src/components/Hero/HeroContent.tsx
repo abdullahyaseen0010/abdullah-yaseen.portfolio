@@ -79,9 +79,9 @@ const HeroContent = ({
         variants={itemVariants}
         className="text-tertiary-content text-lg lg:text-xl"
       >
-        Building modern, performant web applications with 2 years of experience. 
-        Specializing in React, Next.js, and TailwindCSS to create clean, responsive UIs 
-        and scalable full-stack solutions.
+        I build responsive, high-performance web applications with React, Next.js,
+        TypeScript, and Tailwind CSS for businesses that want modern digital experiences
+        and scalable product growth.
       </motion.h2>
 
       <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
@@ -96,7 +96,7 @@ const HeroContent = ({
         </motion.a>
 
         <motion.a
-          href="https://linkedin.com/in/abdullahyaseen"
+          href="https://www.linkedin.com/in/abdullah-shaffi/"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}

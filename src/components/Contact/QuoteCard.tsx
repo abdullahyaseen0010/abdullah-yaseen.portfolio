@@ -1,7 +1,5 @@
-// app/components/contact/QuoteCard.tsx (Client Component)
 'use client'
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { inspirationalQuote } from './contactData';
 

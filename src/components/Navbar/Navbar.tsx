@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import NavbarLogo from './NavbarLogo'
 import NavbarMenuButton from './NavbarMenuButton'
 import NavbarDesktopMenu from './NavbarDesktopMenu'
+import NavbarThemeSwitcher from './NavbarThemeSwitcher'
 import NavbarMobileMenu from './NavbarMobileMenu'
 import { navLinks, themeConfig, ThemeKey } from './navbarData'
 
@@ -60,6 +61,17 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isThemeMenuOpen])
 
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMenuOpen])
+
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleThemeMenu = () => setIsThemeMenuOpen(!isThemeMenuOpen)
 
@@ -74,20 +86,28 @@ const Navbar = () => {
 
   return (
     <nav className={`border-border fixed top-0 left-0 right-0 z-50 h-16 bg-primary transition-all duration-500 ${config.navStyle}`}>
-      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between px-4 py-1">
+      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-3 px-3 py-1 sm:px-4">
         <NavbarLogo isMenuOpen={isMenuOpen} />
 
-        <NavbarMenuButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
+        <div className="hidden flex-1 items-center justify-center md:flex">
+          <NavbarDesktopMenu
+            navLinks={navLinks}
+            pathname={pathname}
+            hoverEffect={config.hoverEffect}
+          />
+        </div>
 
-        <NavbarDesktopMenu
-          navLinks={navLinks}
-          pathname={pathname}
-          hoverEffect={config.hoverEffect}
-          currentTheme={currentTheme}
-          isThemeMenuOpen={isThemeMenuOpen}
-          toggleThemeMenu={toggleThemeMenu}
-          changeTheme={changeTheme}
-        />
+        <div className="hidden items-center justify-end md:flex">
+          <NavbarThemeSwitcher
+            currentTheme={currentTheme}
+            isThemeMenuOpen={isThemeMenuOpen}
+            toggleThemeMenu={toggleThemeMenu}
+            changeTheme={changeTheme}
+            hoverEffect={config.hoverEffect}
+          />
+        </div>
+
+        <NavbarMenuButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
 
         <NavbarMobileMenu
           isMenuOpen={isMenuOpen}

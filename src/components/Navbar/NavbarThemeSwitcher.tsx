@@ -21,8 +21,9 @@ const NavbarThemeSwitcher = ({
   return (
     <li className="relative ml-auto theme-dropdown">
       <button
+        type="button"
         onClick={toggleThemeMenu}
-        className={`text-primary-content flex items-center gap-2 rounded-md px-4 py-2 transition-all duration-150 ${hoverEffect}`}
+        className={`text-primary-content flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 transition-all duration-150 ${hoverEffect}`}
       >
         <span>{themeConfig[currentTheme as keyof typeof themeConfig]?.name || '🌙 Dark'}</span>
         <motion.span
@@ -46,8 +47,9 @@ const NavbarThemeSwitcher = ({
             {Object.entries(themeConfig).map(([key, value]) => (
               <button
                 key={key}
+                type="button"
                 onClick={() => changeTheme(key)}
-                className={`text-primary-content block w-full px-4 py-3 text-left transition-all duration-150 ${hoverEffect} ${
+                className={`text-primary-content block w-full cursor-pointer px-4 py-3 text-left transition-all duration-150 ${hoverEffect} ${
                   currentTheme === key ? 'bg-accent/20 font-semibold' : ''
                 }`}
               >

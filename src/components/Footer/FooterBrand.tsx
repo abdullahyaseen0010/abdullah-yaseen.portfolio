@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Code2 } from 'lucide-react'
 import { contactInfo } from './footerData'
@@ -16,38 +17,31 @@ const FooterBrand = () => {
         <motion.div
           whileHover={{ rotate: 360 }}
           transition={{ duration: 0.6 }}
-          className="w-10 h-10 rounded-lg flex items-center justify-center"
+          className="flex h-10 w-10 items-center justify-center rounded-lg"
           style={{
-            background: 'linear-gradient(135deg, var(--gradient-start), var(--gradient-end))'
+            background: 'linear-gradient(135deg, var(--gradient-start), var(--gradient-end))',
           }}
         >
-          <Code2 className="w-5 h-5 text-white" />
+          <Code2 className="h-5 w-5 text-white" />
         </motion.div>
-        <span 
-          className="text-lg font-semibold"
-          style={{ color: 'var(--color-neutral)' }}
-        >
+        <span className="text-lg font-semibold" style={{ color: 'var(--color-neutral)' }}>
           {contactInfo.name}
         </span>
       </h5>
-      <p 
-        className="leading-relaxed"
-        style={{ color: 'var(--color-tertiary-content)' }}
-      >
+
+      <p className="leading-relaxed" style={{ color: 'var(--color-tertiary-content)' }}>
         {contactInfo.description}
       </p>
-      <motion.a
-        href="#home"
-        whileHover={{ x: 4 }}
-        className="mt-4 inline-flex items-center gap-2 text-xs hover:underline"
-        style={{ color: 'var(--color-neutral)' }}
-      >
-        More about me 
-        <span 
-          className="inline-block h-[10px] w-[10px] rounded-full"
-          style={{ backgroundColor: 'var(--color-neutral)' }}
-        />
-      </motion.a>
+
+      <motion.div whileHover={{ x: 4 }}>
+        <Link
+          href="/about"
+          className="mt-4 inline-flex items-center text-xs hover:underline"
+          style={{ color: 'var(--color-neutral)' }}
+        >
+          More about me
+        </Link>
+      </motion.div>
     </motion.div>
   )
 }

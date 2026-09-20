@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { footerLinks } from './footerData'
 
@@ -13,25 +14,27 @@ const FooterLinks = () => {
       className="flex flex-wrap gap-8"
     >
       {footerLinks.map((link, index) => (
-        <motion.a
+        <motion.div
           key={link.href}
-          href={link.href}
           initial={{ opacity: 0, x: -10 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.05 * index }}
-          whileHover={{ x: 4 }}
-          className="transition-colors duration-300 hover:underline"
-          style={{ color: 'var(--color-tertiary-content)' }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--color-neutral)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'var(--color-tertiary-content)'
-          }}
         >
-          {link.title}.
-        </motion.a>
+          <Link
+            href={link.href}
+            className="transition-colors duration-300 hover:underline"
+            style={{ color: 'var(--color-tertiary-content)' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--color-neutral)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--color-tertiary-content)'
+            }}
+          >
+            {link.title}
+          </Link>
+        </motion.div>
       ))}
     </motion.div>
   )

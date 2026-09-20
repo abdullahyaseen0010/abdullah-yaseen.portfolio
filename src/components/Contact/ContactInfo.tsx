@@ -1,7 +1,5 @@
-// app/components/contact/ContactInfo.tsx (Client Component)
 'use client'
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import ContactInfoCard from './ContactInfoCard';
 import WhyWorkCard from './WhyWorkCard';

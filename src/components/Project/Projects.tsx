@@ -2,7 +2,7 @@
 import React from 'react';
 import ProjectsGrid from './ProjectsGrid';
 import SectionHeader from './SectionHeader';
-import { projects } from './projectss';
+import { projects } from './projectsData';
 import ServicesBackground from '../Services/ServicesBackground';
 
 const Projects = () => {

@@ -1,7 +1,5 @@
-// components/projects/ProjectCard.tsx (Client Component)
 'use client'
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Code2 } from 'lucide-react';
 import { Project } from './project';

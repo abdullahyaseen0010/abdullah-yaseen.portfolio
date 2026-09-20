@@ -1,4 +1,4 @@
-import {Linkedin, Mail} from 'lucide-react'
+import { Github, Linkedin, Mail } from 'lucide-react'
 
 export interface FooterLink {
   title: string
@@ -13,10 +13,11 @@ export interface SocialLink {
 }
 
 export const footerLinks: FooterLink[] = [
-  { title: 'Home', href: '#home' },
-  { title: 'Services', href: '#services' },
-  { title: 'Projects', href: '#projects' },
-  { title: 'Contact', href: '#contact' }
+  { title: 'Home', href: '/' },
+  { title: 'About', href: '/about' },
+  { title: 'Services', href: '/services' },
+  { title: 'Projects', href: '/projects' },
+  { title: 'Contact', href: '/contact' }
 ]
 
 export const socialLinks: SocialLink[] = [
@@ -30,6 +31,12 @@ export const socialLinks: SocialLink[] = [
     name: 'Email',
     icon: Mail,
     href: 'mailto:abdullahyaseen1100@gmail.com',
+    color: '#EA4335'
+  },
+  {
+    name: 'Github',
+    icon: Github,
+    href: 'https://github.com/abdullahyaseen0010',
     color: '#EA4335'
   }
 ]

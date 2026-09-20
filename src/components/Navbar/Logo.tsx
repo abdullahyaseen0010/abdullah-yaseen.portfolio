@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type SVGProps } from 'react'
 
-const Logo = (props: React.SVGProps<SVGSVGElement>) => {
+const Logo = (props: SVGProps<SVGSVGElement>) => {
   const [theme, setTheme] = useState('dark')
 
   useEffect(() => {

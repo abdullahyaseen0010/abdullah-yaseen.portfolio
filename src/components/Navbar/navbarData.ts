@@ -1,9 +1,10 @@
 // Server-safe data for Navbar
 export const navLinks = [
-  { label: 'Home', href: '/#home' },
-  { label: 'Projects', href: '/#projects' },
-  { label: 'Services', href: '/#services' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Services', href: '/services' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export const themeConfig = {
