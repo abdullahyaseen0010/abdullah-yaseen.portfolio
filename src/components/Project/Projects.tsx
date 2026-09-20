@@ -2,8 +2,8 @@
 import React from 'react';
 import ProjectsGrid from './ProjectsGrid';
 import SectionHeader from './SectionHeader';
-import FloatingParticles from './FloatingParticles';
 import { projects } from './projectss';
+import ServicesBackground from '../Services/ServicesBackground';
 
 const Projects = () => {
   return (
@@ -16,8 +16,9 @@ const Projects = () => {
       />
       
       <ProjectsGrid projects={projects} />
+
+      <ServicesBackground />
       
-      <FloatingParticles count={5} />
     </section>
   );
 };

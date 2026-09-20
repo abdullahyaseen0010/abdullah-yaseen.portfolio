@@ -3,11 +3,13 @@ import React from 'react';
 import ContactForm from './ContactForm';
 import ContactInfo from './ContactInfo';
 import ContactHeader from './ContactHeader';
+import ServicesBackground from '../Services/ServicesBackground';
 
 const Contact = () => {
   return (
     <section id="contact" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden scroll-mt-16">
       {/* Background Effects */}
+      <ServicesBackground />
       <div className="absolute inset-0 pointer-events-none">
         <div 
           className="absolute inset-0"

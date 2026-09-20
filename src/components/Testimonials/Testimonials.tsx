@@ -4,6 +4,7 @@
 import React, { useRef } from 'react';
 import { motion, useAnimationFrame } from 'framer-motion';
 import { Star, Quote, Sparkles } from 'lucide-react';
+import ServicesBackground from '../Services/ServicesBackground';
 
 interface Testimonial {
   id: number;
@@ -102,7 +103,7 @@ const TestimonialMarquee = ({ speed = 30, pauseOnHover = true }: TestimonialMarq
       onMouseEnter={() => pauseOnHover && setIsPaused(true)}
       onMouseLeave={() => pauseOnHover && setIsPaused(false)}
     >
-      <div ref={contentRef} className="flex w-max">
+      <div ref={contentRef} className="flex w-max gap-6">
         {/* Original content */}
         <div className="flex shrink-0 items-stretch gap-6 lg:gap-8">
           {testimonials.map((testimonial) => (
@@ -245,6 +246,7 @@ const Testimonials = () => {
   return (
     <section className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background Effects */}
+      <ServicesBackground />
       <div className="absolute inset-0 pointer-events-none">
         <div 
           className="absolute inset-0"
