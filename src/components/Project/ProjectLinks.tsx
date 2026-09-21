@@ -36,7 +36,7 @@ const ProjectLinks = ({ github, demo }: ProjectLinksProps) => {
       )}
       {demo && (
         <motion.a
-          href={demo}
+          href="https://brewcraftcoffee.vercel.app/"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.1 }}
