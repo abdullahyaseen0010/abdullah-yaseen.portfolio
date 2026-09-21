@@ -112,9 +112,6 @@ const ProjectCard = ({ project, isHovered, onHoverStart, onHoverEnd }: ProjectCa
           <ProjectLinks github={project.github} demo={project.demo} />
         </div>
 
-         <div className="relative z-10">
-          <ProjectLinks github={project.github} demo={project.demo} />
-        </div>
 
         {/* Animated border glow on hover */}
         <motion.div
