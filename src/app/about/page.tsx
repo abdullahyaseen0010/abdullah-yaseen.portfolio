@@ -1,23 +1,26 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Layers3, Sparkles } from 'lucide-react'
 import Navbar from '@/src/components/Navbar/Navbar'
 import Footer from '@/src/components/Footer/Footer'
-import SkillsSection from '@/src/components/Marquee/SkillsSection'
 import PageShell from '@/src/components/UI/PageShell'
 import PageContainer from '@/src/components/UI/PageContainer'
-import SurfaceCard from '@/src/components/UI/SurfaceCard'
+import SkillsSection from '@/src/components/Marquee/SkillsSection'
 
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Learn more about Abdullah Yaseen, a Full Stack Developer building high-performance web experiences with React, Next.js, TypeScript, and Tailwind CSS.',
+    'About Abdullah Yaseen, a web developer in Bahawalpur, Pakistan who builds with React, Next.js, TypeScript and Tailwind CSS.',
 }
 
-const stats = [
-  { label: 'Years of experience', value: '2+' },
-  { label: 'Core stack', value: 'React / Next.js' },
-  { label: 'Strength', value: 'SEO & UX' },
+const bio = [
+  "I'm Abdullah Yaseen, a web developer based in Bahawalpur, Punjab. I build websites and web apps with React, Next.js, TypeScript and Tailwind CSS, and I write the Node.js APIs behind them when a project needs one.",
+  "I've been building for the web for two years, mostly with React and Next.js. I care about pages that load quickly, work on a phone, and can be used with a keyboard.",
+]
+
+const info = [
+  { label: 'Based in', value: 'Bahawalpur, Pakistan' },
+  { label: 'Focus', value: 'React · Next.js · TypeScript' },
+  { label: 'Available for', value: 'Junior roles · Freelance' },
 ]
 
 export default function AboutPage() {
@@ -25,82 +28,48 @@ export default function AboutPage() {
     <PageShell>
       <Navbar />
 
-      <PageContainer className="pb-20 pt-28">
-        <SurfaceCard className="p-6 shadow-2xl shadow-slate-950/20 md:p-10 lg:p-14">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
-            <Sparkles className="h-4 w-4" />
-            About Abdullah Yaseen
-          </div>
+      <PageContainer className="pt-28 pb-16 lg:pt-36 lg:pb-24">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_0.6fr] lg:gap-16">
+          <div>
+            <h1 className="text-neutral max-w-2xl text-4xl sm:text-5xl lg:text-6xl">
+              I&apos;m a web developer from Bahawalpur.
+            </h1>
 
-          <div className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
-            <div>
-              <h1 className="mb-5 text-4xl font-black leading-tight md:text-5xl">
-                I build clean, conversion-focused web experiences that help brands look stronger online.
-              </h1>
+            {/* Optional: add a real photo of yourself here with next/image.
+                A photo is the fastest way to make this page feel personal. */}
 
-              <p className="max-w-2xl text-lg leading-8 text-tertiary-content">
-                I’m Abdullah Yaseen, a Full Stack Developer with hands-on experience building responsive websites and web apps
-                using React, Next.js, TypeScript, and Tailwind CSS. I focus on performance, accessibility, clean code, and user
-                experience so digital products are not only beautiful, but also easier to scale, maintain, and grow.
-              </p>
-            </div>
-
-            <div className="grid gap-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl border border-border bg-primary/50 p-4">
-                  <div className="text-2xl font-bold text-neutral">{stat.value}</div>
-                  <div className="mt-2 text-sm text-tertiary-content">{stat.label}</div>
-                </div>
+            <div className="mt-10 flex max-w-2xl flex-col gap-6 text-lg lg:mt-14">
+              {bio.map((paragraph) => (
+                <p key={paragraph} className="text-tertiary-content">
+                  {paragraph}
+                </p>
               ))}
+
+              <p className="text-tertiary-content">
+                I&apos;m open to junior roles and freelance projects. Email is the best way to reach me.
+              </p>
+
+              <Link
+                href="/contact"
+                className="text-neutral decoration-accent w-fit py-1 underline decoration-2 underline-offset-4"
+              >
+                Get in touch
+              </Link>
             </div>
           </div>
-        </SurfaceCard>
-      </PageContainer>
 
-      <PageContainer className="pb-20">
-        <div className="grid gap-8 md:grid-cols-2">
-          <SurfaceCard className="p-8">
-            <div className="mb-5 flex items-center gap-3 text-accent">
-              <Layers3 className="h-5 w-5" />
-              <span className="text-lg font-semibold">How I work</span>
-            </div>
-            <p className="text-base leading-7 text-tertiary-content">
-              My process blends product thinking, clean architecture, and thoughtful UI implementation. I care about business
-              goals, usability, and maintainability so every project stays polished without becoming bloated or over-engineered.
-            </p>
-          </SurfaceCard>
-
-          <SurfaceCard className="p-8">
-            <div className="mb-5 flex items-center gap-3 text-accent">
-              <Sparkles className="h-5 w-5" />
-              <span className="text-lg font-semibold">What I build</span>
-            </div>
-            <p className="text-base leading-7 text-tertiary-content">
-              I build landing pages, business websites, dashboards, and portfolio experiences that are responsive, conversion-ready,
-              and built to scale with real-world product needs in mind.
-            </p>
-          </SurfaceCard>
+          <dl className="border-border flex flex-col gap-6 border-t pt-8 lg:mt-2 lg:pt-10">
+            {info.map((item) => (
+              <div key={item.label}>
+                <dt className="text-tertiary-content text-sm">{item.label}</dt>
+                <dd className="text-neutral mt-1 text-lg">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </PageContainer>
 
       <SkillsSection />
-
-      <PageContainer className="pb-24 pt-24">
-        <div className="flex flex-col items-center justify-between gap-6 rounded-3xl border border-border bg-secondary/30 p-8 text-center md:flex-row md:text-left">
-          <div>
-            <p className="mb-2 text-sm uppercase tracking-[0.2em] text-tertiary-content">Let’s build</p>
-            <h2 className="text-3xl font-bold text-neutral">A stronger digital presence for your brand.</h2>
-          </div>
-
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-semibold text-black transition-transform hover:scale-[1.02]"
-          >
-            Start a project
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </PageContainer>
 
       <Footer />
     </PageShell>

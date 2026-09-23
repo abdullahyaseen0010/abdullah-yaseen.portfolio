@@ -1,65 +1,50 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { themeConfig } from './navbarData'
+import { useEffect, useState } from 'react'
+import { Moon, Sun } from 'lucide-react'
 
 interface NavbarThemeSwitcherProps {
-  currentTheme: string
-  isThemeMenuOpen: boolean
-  toggleThemeMenu: () => void
-  changeTheme: (theme: string) => void
-  hoverEffect: string
+  className?: string
 }
 
-const NavbarThemeSwitcher = ({
-  currentTheme,
-  isThemeMenuOpen,
-  toggleThemeMenu,
-  changeTheme,
-  hoverEffect,
-}: NavbarThemeSwitcherProps) => {
-  return (
-    <li className="relative ml-auto theme-dropdown">
-      <button
-        type="button"
-        onClick={toggleThemeMenu}
-        className={`text-primary-content flex cursor-pointer items-center gap-2 rounded-md px-4 py-2 transition-all duration-150 ${hoverEffect}`}
-      >
-        <span>{themeConfig[currentTheme as keyof typeof themeConfig]?.name || '🌙 Dark'}</span>
-        <motion.span
-          animate={{ rotate: isThemeMenuOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="text-xs"
-        >
-          ▼
-        </motion.span>
-      </button>
+// A light/dark toggle switch. The thumb position and icon come from CSS
+// (data-theme on <html>), so there is no flash on load. The state below
+// only keeps aria-checked accurate for screen readers.
+const NavbarThemeSwitcher = ({ className = '' }: NavbarThemeSwitcherProps) => {
+  const [isLight, setIsLight] = useState(false)
 
-      <AnimatePresence>
-        {isThemeMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="border-border bg-secondary absolute right-0 top-full z-50 mt-2 min-w-[160px] overflow-hidden rounded-lg border shadow-xl"
-          >
-            {Object.entries(themeConfig).map(([key, value]) => (
-              <button
-                key={key}
-                type="button"
-                onClick={() => changeTheme(key)}
-                className={`text-primary-content block w-full cursor-pointer px-4 py-3 text-left transition-all duration-150 ${hoverEffect} ${
-                  currentTheme === key ? 'bg-accent/20 font-semibold' : ''
-                }`}
-              >
-                {value.name}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </li>
+  useEffect(() => {
+    setIsLight(document.documentElement.getAttribute('data-theme') === 'light')
+  }, [])
+
+  const toggle = () => {
+    const root = document.documentElement
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
+    root.setAttribute('data-theme', next)
+    setIsLight(next === 'light')
+    try {
+      localStorage.setItem('theme', next)
+    } catch {
+      // Storage can be blocked; the theme still changes for this visit.
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={isLight}
+      aria-label="Light theme"
+      onClick={toggle}
+      className={`flex h-11 items-center ${className}`}
+    >
+      <span className="border-border bg-secondary relative block h-6 w-11 rounded-full border">
+        <span className="bg-accent text-primary absolute top-0.5 left-0.5 flex h-4.5 w-4.5 items-center justify-center rounded-full transition-transform duration-200 [[data-theme=light]_&]:translate-x-5">
+          <Moon className="h-3 w-3 [[data-theme=light]_&]:hidden" aria-hidden="true" />
+          <Sun className="hidden h-3 w-3 [[data-theme=light]_&]:block" aria-hidden="true" />
+        </span>
+      </span>
+    </button>
   )
 }
 

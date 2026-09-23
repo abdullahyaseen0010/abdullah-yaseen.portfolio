@@ -14,9 +14,7 @@ export default function ContactPage() {
   return (
     <PageShell>
       <Navbar />
-      <div className="pt-16">
-        <Contact />
-      </div>
+      <Contact />
       <Footer />
     </PageShell>
   )

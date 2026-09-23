@@ -1,124 +1,42 @@
-'use client'
+import Link from 'next/link'
+import { hero } from './heroData'
 
-import { motion, AnimatePresence, Variants } from 'framer-motion'
-import { 
-  Sparkles, 
-  Linkedin, 
-  Mail,
-  FileText
-} from 'lucide-react'
+const quietLinkClass =
+  'text-tertiary-content decoration-border hover:text-neutral hover:decoration-accent underline underline-offset-4 decoration-2 transition-colors py-2'
 
-interface HeroContentProps {
-  currentRole: number
-  roles: string[]
-  containerVariants: Variants
-  itemVariants: Variants
-  roleVariants: Variants
-}
-
-const HeroContent = ({ 
-  currentRole, 
-  roles, 
-  containerVariants, 
-  itemVariants, 
-  roleVariants 
-}: HeroContentProps) => {
+const HeroContent = () => {
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="z-10 flex flex-col justify-center space-y-6 lg:space-y-8"
-    >
-      <motion.div variants={itemVariants} className="space-y-4">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-accent inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-medium"
+    <div className="flex flex-col gap-8">
+      <h1 className="text-neutral max-w-[14ch] text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
+        {hero.headline}
+      </h1>
+
+      <p className="text-tertiary-content max-w-[52ch] text-lg lg:text-xl">{hero.intro}</p>
+
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
+        <a
+          href={`mailto:${hero.email}`}
+          className="bg-accent text-primary rounded-md px-5 py-3 font-semibold transition-opacity hover:opacity-90"
         >
-          <Sparkles className="h-4 w-4" />
-          Available for Work
-        </motion.div>
+          Email me
+        </a>
 
-        <h1 className="space-y-2">
-          <motion.span
-            variants={itemVariants}
-            className="text-neutral block text-4xl font-bold lg:text-5xl"
-          >
-            Hi, I&#39;m{' '}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  'linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end))',
-              }}
-            >
-              Abdullah Yaseen
-            </span>
-          </motion.span>
-
-          <div className="h-16 lg:h-20">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={currentRole}
-                variants={roleVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="text-accent block text-3xl font-bold lg:text-4xl"
-              >
-                {roles[currentRole]}
-              </motion.span>
-            </AnimatePresence>
-          </div>
-        </h1>
-      </motion.div>
-
-      <motion.h2
-        variants={itemVariants}
-        className="text-tertiary-content text-lg lg:text-xl"
-      >
-        I build responsive, high-performance web applications with React, Next.js,
-        TypeScript, and Tailwind CSS for businesses that want modern digital experiences
-        and scalable product growth.
-      </motion.h2>
-
-      <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
-        <motion.a
-          href="mailto:abdullahyaseen1100@gmail.com"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-accent group inline-flex items-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold text-black shadow-lg shadow-accent/25 transition-all hover:shadow-accent/40"
+        <Link
+          href="/projects"
+          className="border-border text-neutral hover:border-accent hover:text-accent rounded-md border px-5 py-3 font-semibold transition-colors"
         >
-          <Mail className="h-4 w-4" />
-          Hire Me
-        </motion.a>
+          See my projects
+        </Link>
 
-        <motion.a
-          href="https://www.linkedin.com/in/abdullah-shaffi/"
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="border-border text-neutral inline-flex items-center gap-2 rounded-lg border bg-secondary/50 px-6 py-3 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-secondary"
-        >
-          <Linkedin className="h-4 w-4" />
+        <a href={hero.resume} download className={quietLinkClass}>
+          Download resume
+        </a>
+
+        <a href={hero.linkedin} target="_blank" rel="noopener noreferrer" className={quietLinkClass}>
           LinkedIn
-        </motion.a>
-
-        <motion.a
-          href="/resume.pdf"
-          download
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="border-border text-neutral inline-flex items-center gap-2 rounded-lg border bg-secondary/50 px-6 py-3 text-sm font-medium backdrop-blur-sm transition-colors hover:bg-secondary"
-        >
-          <FileText className="h-4 w-4" />
-          Resume
-        </motion.a>
-      </motion.div>
-    </motion.div>
+        </a>
+      </div>
+    </div>
   )
 }
 

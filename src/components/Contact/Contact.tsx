@@ -1,39 +1,56 @@
-// app/components/contact/Contact.tsx (Server Component)
-import React from 'react';
-import ContactForm from './ContactForm';
-import ContactInfo from './ContactInfo';
-import ContactHeader from './ContactHeader';
-import ServicesBackground from '../Services/ServicesBackground';
+import ContactForm from './ContactForm'
+import { contactConfig, contactCopy } from './contactData'
+
+const linkClass =
+  'text-neutral decoration-border hover:decoration-accent underline underline-offset-4 decoration-2 transition-colors py-1'
 
 const Contact = () => {
   return (
-    <section id="contact" className="relative min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden scroll-mt-16">
-      {/* Background Effects */}
-      <ServicesBackground />
-      <div className="absolute inset-0 pointer-events-none">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,.05) 1px, transparent 0)',
-            backgroundSize: '40px 40px',
-            maskImage: 'radial-gradient(ellipse 70% 60% at 50% 50%, #000 40%, transparent 100%)',
-            WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 50%, #000 40%, transparent 100%)',
-          }}
-        />
-      </div>
+    <section className="bg-primary">
+      <div className="mx-auto max-w-6xl px-4 pt-28 pb-24 lg:px-12 lg:pt-32">
+        <header className="mb-16 max-w-2xl lg:mb-20">
+          <h1 className="text-neutral text-4xl sm:text-5xl lg:text-6xl">{contactCopy.title}</h1>
+          <p className="text-tertiary-content mt-6 text-lg lg:text-xl">{contactCopy.intro}</p>
+        </header>
 
-      {/* Header */}
-      <ContactHeader />
+        <div className="grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-16">
+          <div className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-2 text-lg">
+              <li>
+                <a href={`mailto:${contactConfig.email}`} className={`${linkClass} break-all`}>
+                  {contactConfig.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={contactConfig.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href={contactConfig.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={linkClass}
+                >
+                  GitHub
+                </a>
+              </li>
+            </ul>
 
-      <div className="grid lg:grid-cols-2 gap-12 items-start relative z-10">
-        {/* Contact Form */}
-        <ContactForm />
+            <p className="text-primary-content">{contactConfig.location.full}</p>
+          </div>
 
-        {/* Info Section */}
-        <ContactInfo />
+          <ContactForm />
+        </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

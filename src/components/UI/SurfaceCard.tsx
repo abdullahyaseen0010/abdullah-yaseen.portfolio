@@ -6,11 +6,7 @@ interface SurfaceCardProps {
 }
 
 const SurfaceCard = ({ children, className = '' }: SurfaceCardProps) => {
-  return (
-    <div className={`rounded-3xl border border-border bg-secondary/30 backdrop-blur-sm ${className}`}>
-      {children}
-    </div>
-  )
+  return <div className={`border-border bg-secondary rounded-lg border ${className}`}>{children}</div>
 }
 
 export default SurfaceCard

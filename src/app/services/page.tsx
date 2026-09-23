@@ -5,18 +5,16 @@ import Footer from '@/src/components/Footer/Footer'
 import PageShell from '@/src/components/UI/PageShell'
 
 export const metadata: Metadata = {
-  title: 'Services',
+  title: 'Work with me',
   description:
-    'Web development services including React development, Next.js app design, Tailwind CSS interfaces, and scalable product frontend solutions.',
+    'What Abdullah Yaseen can build: websites and landing pages, web apps, and Figma-to-code implementation.',
 }
 
 export default function ServicesPage() {
   return (
     <PageShell>
       <Navbar />
-      <div className="pt-16">
-        <Services />
-      </div>
+      <Services />
       <Footer />
     </PageShell>
   )

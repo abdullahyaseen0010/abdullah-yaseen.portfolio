@@ -5,7 +5,7 @@ import SkillsSection from '@/src/components/Marquee/SkillsSection'
 import Projects from '@/src/components/Project/Projects'
 import Services from '@/src/components/Services/Services'
 import Contact from '@/src/components/Contact/Contact'
-import Testimonials from '@/src/components/Testimonials/Testimonials'
+import Currently from '@/src/components/Currently/Currently'
 import Footer from '@/src/components/Footer/Footer'
 
 export const metadata: Metadata = {
@@ -22,8 +22,8 @@ export default function Home() {
       <SkillsSection />
       <Projects />
       <Services />
-      <Testimonials />
       <Contact />
+      <Currently />
       <Footer />
     </main>
   )

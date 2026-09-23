@@ -8,6 +8,7 @@ interface PanelCardProps {
   contentClassName?: string
 }
 
+// A plain bordered panel: solid background, small radius, no blur or shadow.
 const PanelCard = ({
   title,
   children,
@@ -16,16 +17,9 @@ const PanelCard = ({
   contentClassName = '',
 }: PanelCardProps) => {
   return (
-    <div
-      className={`rounded-xl border border-border bg-secondary/50 p-8 backdrop-blur-sm ${className}`}
-    >
+    <div className={`border-border bg-secondary rounded-md border p-6 md:p-8 ${className}`}>
       {title ? (
-        <h3
-          className={`mb-6 text-2xl font-bold ${titleClassName}`}
-          style={{ color: 'var(--color-neutral)' }}
-        >
-          {title}
-        </h3>
+        <h3 className={`text-neutral mb-6 text-2xl ${titleClassName}`}>{title}</h3>
       ) : null}
 
       <div className={contentClassName}>{children}</div>

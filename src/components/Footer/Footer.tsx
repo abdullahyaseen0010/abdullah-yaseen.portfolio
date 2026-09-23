@@ -1,31 +1,60 @@
-import FooterBrand from './FooterBrand'
-import FooterLinks from './FooterLinks'
-import FooterSocials from './FooterSocials'
-import FooterContact from './FooterContact'
-import FooterCopyright from './FooterCopyright'
-import FooterBackground from './FooterBackground'
+import Link from 'next/link'
+import { contactInfo, footerLinks, socialLinks } from './footerData'
+
+const linkClass =
+  'text-tertiary-content hover:text-neutral inline-block py-1 text-sm transition-colors hover:underline underline-offset-4'
 
 const Footer = () => {
-  return (
-    <footer 
-      className="relative flex min-h-[560px] flex-col justify-between gap-20 overflow-hidden px-4 py-14 md:p-14"
-      style={{ backgroundColor: 'var(--color-secondary)' }}
-    >
-      <FooterBackground />
+  const year = new Date().getFullYear()
 
-      {/* Top section */}
-      <div className="relative z-20 grid grid-cols-1 items-start gap-20 md:grid-cols-2 md:gap-12">
-        <FooterBrand />
-        <FooterLinks />
+  return (
+    <footer className="bg-primary border-border border-t">
+      <div className="mx-auto max-w-6xl px-4 py-14 lg:px-12">
+        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+          {/* Brand */}
+          <div className="flex flex-col gap-2 md:max-w-xs">
+            <p className="font-heading text-neutral text-base font-semibold">
+              {contactInfo.name}
+            </p>
+            <p className="text-tertiary-content text-sm leading-relaxed">
+              {contactInfo.tagline}
+            </p>
+          </div>
+
+          {/* Nav links */}
+          <nav aria-label="Footer">
+            <ul className="flex flex-col">
+              {footerLinks.map((link) => (
+                <li key={link.href}>
+                  <Link href={link.href} className={linkClass}>
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Socials */}
+          <ul className="flex flex-col">
+            {socialLinks.map((social) => (
+              <li key={social.name}>
+                <a
+                  href={social.href}
+                  {...(social.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className={linkClass}
+                >
+                  {social.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
-      {/* Bottom section */}
-      <div className="relative z-20 flex flex-col-reverse gap-20 md:grid md:grid-cols-2 md:gap-12">
-        <div className="grid grid-cols-2 gap-4">
-          <FooterSocials />
-          <FooterCopyright />
-        </div>
-        <FooterContact />
+      <div className="border-border border-t">
+        <p className="text-primary-content mx-auto max-w-6xl px-4 py-6 text-center text-xs lg:px-12">
+          © {year} {contactInfo.name}
+        </p>
       </div>
     </footer>
   )

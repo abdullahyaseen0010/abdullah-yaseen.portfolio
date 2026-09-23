@@ -1,89 +1,51 @@
-'use client'
-
 import Link from 'next/link'
-import { AnimatePresence, motion } from 'framer-motion'
-import { themeConfig } from './navbarData'
-import { itemVariants, menuVariants } from './animationVariants'
+import NavbarThemeSwitcher from './NavbarThemeSwitcher'
 
 interface NavbarMobileMenuProps {
   isMenuOpen: boolean
   navLinks: Array<{ label: string; href: string }>
   pathname: string
-  hoverEffect: string
-  currentTheme: string
-  changeTheme: (theme: string) => void
-  setIsMenuOpen: (value: boolean) => void
+  onNavigate: () => void
 }
 
-const NavbarMobileMenu = ({
-  isMenuOpen,
-  navLinks,
-  pathname,
-  hoverEffect,
-  currentTheme,
-  changeTheme,
-  setIsMenuOpen,
-}: NavbarMobileMenuProps) => {
+const NavbarMobileMenu = ({ isMenuOpen, navLinks, pathname, onNavigate }: NavbarMobileMenuProps) => {
   return (
-    <AnimatePresence>
-      {isMenuOpen && (
-        <motion.div
-          variants={menuVariants}
-          initial="closed"
-          animate="open"
-          exit="closed"
-          className="fixed inset-0 z-40 bg-primary/95 backdrop-blur-sm md:hidden"
-          aria-modal="true"
-          role="dialog"
-        >
-          <motion.ul
-            className="flex h-full w-full flex-col overflow-y-auto pt-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            {navLinks.map(({ label, href }) => (
-              <motion.li
-                key={href}
-                variants={itemVariants}
-                onClick={() => setIsMenuOpen(false)}
-                className="border-border flex cursor-pointer items-center border-b px-4 text-2xl"
+    <div
+      id="mobile-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Site menu"
+      aria-hidden={!isMenuOpen}
+      className={`bg-primary fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto transition-opacity duration-200 md:hidden ${
+        isMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+      }`}
+    >
+      <ul className="flex flex-col px-4">
+        {navLinks.map(({ label, href }) => {
+          const isActive = pathname === href
+          return (
+            <li key={href} className="border-border border-b">
+              <Link
+                href={href}
+                tabIndex={isMenuOpen ? 0 : -1}
+                onClick={onNavigate}
+                aria-current={isActive ? 'page' : undefined}
+                className={`font-heading block py-6 text-2xl ${
+                  isActive ? 'text-accent font-semibold' : 'text-neutral'
+                }`}
               >
-                <Link
-                  href={href}
-                  aria-current={pathname === href ? 'page' : undefined}
-                  className={`text-primary-content w-full cursor-pointer py-7 transition-all duration-150 ${hoverEffect} ${
-                    pathname === href ? 'text-accent font-semibold' : ''
-                  }`}
-                >
-                  {label}
-                </Link>
-              </motion.li>
-            ))}
+                {label}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
 
-            <motion.li variants={itemVariants} className="border-border border-b px-4 py-4">
-              <div className="text-primary-content mb-3 text-sm font-semibold opacity-60">
-                Choose Theme
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {Object.entries(themeConfig).map(([key, value]) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => changeTheme(key)}
-                    className={`border-border cursor-pointer rounded-md border px-3 py-2 text-sm transition-all duration-150 ${hoverEffect} ${
-                      currentTheme === key ? 'bg-accent text-white font-semibold' : 'text-primary-content'
-                    }`}
-                  >
-                    {value.name}
-                  </button>
-                ))}
-              </div>
-            </motion.li>
-          </motion.ul>
-        </motion.div>
-      )}
-    </AnimatePresence>
+      <div className="flex items-center justify-between px-4 py-4">
+        <span className="text-primary-content text-lg">Theme</span>
+        <NavbarThemeSwitcher />
+      </div>
+    </div>
   )
 }
 

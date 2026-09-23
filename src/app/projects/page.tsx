@@ -7,16 +7,14 @@ import PageShell from '@/src/components/UI/PageShell'
 export const metadata: Metadata = {
   title: 'Projects',
   description:
-    'Explore recent portfolio projects built with React, Next.js, TypeScript, and modern web technologies by Abdullah Yaseen.',
+    "A selection of work Abdullah Yaseen has built with React, Next.js, TypeScript and Tailwind CSS.",
 }
 
 export default function ProjectsPage() {
   return (
     <PageShell>
       <Navbar />
-      <div className="pt-16">
-        <Projects />
-      </div>
+      <Projects />
       <Footer />
     </PageShell>
   )

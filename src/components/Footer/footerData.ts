@@ -1,5 +1,3 @@
-import { Github, Linkedin, Mail } from 'lucide-react'
-
 export interface FooterLink {
   title: string
   href: string
@@ -7,49 +5,25 @@ export interface FooterLink {
 
 export interface SocialLink {
   name: string
-  icon: React.ElementType
   href: string
-  color: string
+  external: boolean
 }
 
 export const footerLinks: FooterLink[] = [
   { title: 'Home', href: '/' },
   { title: 'About', href: '/about' },
-  { title: 'Services', href: '/services' },
   { title: 'Projects', href: '/projects' },
-  { title: 'Contact', href: '/contact' }
+  { title: 'Services', href: '/services' },
+  { title: 'Contact', href: '/contact' },
 ]
 
 export const socialLinks: SocialLink[] = [
-  {
-    name: 'LinkedIn',
-    icon: Linkedin,
-    href: 'https://www.linkedin.com/in/abdullah-shaffi',
-    color: '#0077B5'
-  },
-  {
-    name: 'Email',
-    icon: Mail,
-    href: 'mailto:abdullahyaseen1100@gmail.com',
-    color: '#EA4335'
-  },
-  {
-    name: 'Github',
-    icon: Github,
-    href: 'https://github.com/abdullahyaseen0010',
-    color: '#EA4335'
-  }
+  { name: 'Email', href: 'mailto:abdullahyaseen1100@gmail.com', external: false },
+  { name: 'LinkedIn', href: 'https://www.linkedin.com/in/abdullah-shaffi', external: true },
+  { name: 'GitHub', href: 'https://github.com/abdullahyaseen0010', external: true },
 ]
 
 export const contactInfo = {
   name: 'Abdullah Yaseen',
-  description: 'Web Developer specializing in React, Next.js, and TailwindCSS. Building modern, performant web applications with clean code and exceptional user experiences.',
-  email: 'abdullahyaseen1100@gmail.com',
-  phone: '+92 311 6652399',
-  phoneDisplay: '+92 311 6652399',
-  location: {
-    city: 'Bahawalpur',
-    state: 'Punjab',
-    country: 'Pakistan'
-  }
+  tagline: 'Web developer building with React and Next.js.',
 }

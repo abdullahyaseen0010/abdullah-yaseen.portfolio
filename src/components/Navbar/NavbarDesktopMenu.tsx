@@ -3,28 +3,29 @@ import Link from 'next/link'
 interface NavbarDesktopMenuProps {
   navLinks: Array<{ label: string; href: string }>
   pathname: string
-  hoverEffect: string
 }
 
-const NavbarDesktopMenu = ({ navLinks, pathname, hoverEffect }: NavbarDesktopMenuProps) => {
+const NavbarDesktopMenu = ({ navLinks, pathname }: NavbarDesktopMenuProps) => {
   return (
-    <ul className="hidden h-full w-[72%] flex-row items-center md:flex lg:w-[70%]">
-      {navLinks.map(({ label, href }) => (
-        <li
-          key={href}
-          className="border-border flex items-center border-e px-4 text-base first:border-s lg:px-8"
-        >
-          <Link
-            href={href}
-            aria-current={pathname === href ? 'page' : undefined}
-            className={`text-primary-content w-full cursor-pointer transition-all duration-150 ${hoverEffect} ${
-              pathname === href ? 'text-accent font-semibold' : ''
-            }`}
-          >
-            {label}
-          </Link>
-        </li>
-      ))}
+    <ul className="hidden items-center gap-8 md:flex">
+      {navLinks.map(({ label, href }) => {
+        const isActive = pathname === href
+        return (
+          <li key={href}>
+            <Link
+              href={href}
+              aria-current={isActive ? 'page' : undefined}
+              className={`py-2 text-sm transition-colors ${
+                isActive
+                  ? 'text-neutral decoration-accent underline decoration-2 underline-offset-8'
+                  : 'text-primary-content hover:text-neutral'
+              }`}
+            >
+              {label}
+            </Link>
+          </li>
+        )
+      })}
     </ul>
   )
 }

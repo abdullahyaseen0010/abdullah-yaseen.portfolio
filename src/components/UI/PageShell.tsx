@@ -6,7 +6,7 @@ interface PageShellProps {
 }
 
 const PageShell = ({ children, className = '' }: PageShellProps) => {
-  return <main className={`min-h-screen bg-primary text-primary-content ${className}`}>{children}</main>
+  return <main className={`bg-primary text-neutral min-h-screen ${className}`}>{children}</main>
 }
 
 export default PageShell

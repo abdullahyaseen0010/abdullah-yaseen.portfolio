@@ -1,66 +1,29 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import NavbarLogo from './NavbarLogo'
 import NavbarMenuButton from './NavbarMenuButton'
 import NavbarDesktopMenu from './NavbarDesktopMenu'
 import NavbarThemeSwitcher from './NavbarThemeSwitcher'
 import NavbarMobileMenu from './NavbarMobileMenu'
-import { navLinks, themeConfig, ThemeKey } from './navbarData'
+import { navLinks } from './navbarData'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [currentTheme, setCurrentTheme] = useState<ThemeKey>('dark')
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
 
-  // Initialize theme from localStorage on mount
+  // Slightly compact the bar after the page has scrolled a little,
+  // rather than on the very first pixel (avoids jitter at the top).
   useEffect(() => {
-    const savedTheme = (localStorage.getItem('theme') as ThemeKey) || 'dark'
-    document.documentElement.setAttribute('data-theme', savedTheme)
-    setCurrentTheme(savedTheme)
+    const onScroll = () => setIsScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Watch for theme changes
-  useEffect(() => {
-    const theme = (document.documentElement.getAttribute('data-theme') as ThemeKey) || 'dark'
-    setCurrentTheme(theme)
-
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          const newTheme = (document.documentElement.getAttribute('data-theme') as ThemeKey) || 'dark'
-          setCurrentTheme(newTheme)
-        }
-      })
-    })
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!isThemeMenuOpen) return
-      
-      const target = event.target as HTMLElement
-      const dropdown = target.closest('.theme-dropdown')
-      
-      if (!dropdown) {
-        setIsThemeMenuOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [isThemeMenuOpen])
-
+  // Lock page scroll while the mobile menu is open
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? 'hidden' : ''
     return () => {
@@ -68,57 +31,46 @@ const Navbar = () => {
     }
   }, [isMenuOpen])
 
+  // Close the mobile menu on route change
   useEffect(() => {
     setIsMenuOpen(false)
   }, [pathname])
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
-  const toggleThemeMenu = () => setIsThemeMenuOpen(!isThemeMenuOpen)
+  // Close the mobile menu with Escape
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false)
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [isMenuOpen])
 
-  const changeTheme = (theme: string) => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
-    setIsThemeMenuOpen(false)
-    setIsMenuOpen(false)
-  }
-
-  const config = themeConfig[currentTheme] || themeConfig.dark
+  const closeMenu = () => setIsMenuOpen(false)
 
   return (
-    <nav className={`border-border fixed top-0 left-0 right-0 z-50 h-16 bg-primary transition-all duration-500 ${config.navStyle}`}>
-      <div className="mx-auto flex h-full w-full max-w-[1200px] items-center justify-between gap-3 px-3 py-1 sm:px-4">
-        <NavbarLogo isMenuOpen={isMenuOpen} />
+    <nav
+      className={`bg-primary border-border fixed inset-x-0 top-0 z-50 border-b transition-[height] duration-200 ${
+        isScrolled ? 'h-14' : 'h-16'
+      }`}
+    >
+      <div className="mx-auto flex h-full max-w-6xl items-center justify-between gap-6 px-4 lg:px-12">
+        <NavbarLogo onNavigate={closeMenu} />
 
-        <div className="hidden flex-1 items-center justify-center md:flex">
-          <NavbarDesktopMenu
-            navLinks={navLinks}
-            pathname={pathname}
-            hoverEffect={config.hoverEffect}
-          />
+        <div className="hidden items-center gap-8 md:flex">
+          <NavbarDesktopMenu navLinks={navLinks} pathname={pathname} />
+          <NavbarThemeSwitcher />
         </div>
 
-        <div className="hidden items-center justify-end md:flex">
-          <NavbarThemeSwitcher
-            currentTheme={currentTheme}
-            isThemeMenuOpen={isThemeMenuOpen}
-            toggleThemeMenu={toggleThemeMenu}
-            changeTheme={changeTheme}
-            hoverEffect={config.hoverEffect}
-          />
-        </div>
-
-        <NavbarMenuButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
-
-        <NavbarMobileMenu
-          isMenuOpen={isMenuOpen}
-          navLinks={navLinks}
-          pathname={pathname}
-          hoverEffect={config.hoverEffect}
-          currentTheme={currentTheme}
-          changeTheme={changeTheme}
-          setIsMenuOpen={setIsMenuOpen}
-        />
+        <NavbarMenuButton isMenuOpen={isMenuOpen} onClick={() => setIsMenuOpen((open) => !open)} />
       </div>
+
+      <NavbarMobileMenu
+        isMenuOpen={isMenuOpen}
+        navLinks={navLinks}
+        pathname={pathname}
+        onNavigate={closeMenu}
+      />
     </nav>
   )
 }

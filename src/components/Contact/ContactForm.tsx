@@ -1,201 +1,154 @@
 'use client'
 
-import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { motion } from 'framer-motion';
-import { Send, CheckCircle } from 'lucide-react';
-import FormField from './FormField';
-import { contactConfig, formLabels, formPlaceholders, formValidation, successMessage } from './contactData';
+import { useState, type FormEvent, type ChangeEvent } from 'react'
+import { contactConfig, formCopy } from './contactData'
 
-interface FormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
+interface Errors {
+  name?: string
+  email?: string
+  message?: string
 }
 
-interface FormErrors {
-  name?: string;
-  email?: string;
-  subject?: string;
-  message?: string;
-}
+const fieldClass =
+  'border-border bg-secondary text-neutral focus-visible:outline-none focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/40 w-full rounded-md border px-4 py-3'
+const errorFieldClass = 'border-red-500 focus-visible:border-red-500 focus-visible:ring-red-500/30'
+
+const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [errors, setErrors] = useState<Errors>({})
+  const [opened, setOpened] = useState(false)
 
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [focusedField, setFocusedField] = useState<string | null>(null);
+  const validate = (data: FormData): Errors => {
+    const name = String(data.get('name') ?? '').trim()
+    const email = String(data.get('email') ?? '').trim()
+    const message = String(data.get('message') ?? '').trim()
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const next: Errors = {}
+    if (!name) next.name = formCopy.errors.name
+    if (!email || !isValidEmail(email)) next.email = formCopy.errors.email
+    if (message.length < 10) next.message = formCopy.errors.message
+    return next
+  }
 
-    if (!formData.name.trim()) {
-      newErrors.name = formValidation.errors.nameRequired;
-    }
+  const clearError = (field: keyof Errors) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (!errors[field]) return
+    if (field === 'email' && !isValidEmail(event.target.value.trim())) return
+    if (field !== 'email' && !event.target.value.trim()) return
+    setErrors((prev) => ({ ...prev, [field]: undefined }))
+  }
 
-    if (!formData.email.trim()) {
-      newErrors.email = formValidation.errors.emailRequired;
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = formValidation.errors.emailInvalid;
-    }
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
 
-    if (!formData.subject.trim()) {
-      newErrors.subject = formValidation.errors.subjectRequired;
-    }
+    const data = new FormData(event.currentTarget)
+    const foundErrors = validate(data)
+    setErrors(foundErrors)
+    if (Object.keys(foundErrors).length > 0) return
 
-    if (!formData.message.trim()) {
-      newErrors.message = formValidation.errors.messageRequired;
-    } else if (formData.message.trim().length < formValidation.minMessageLength) {
-      newErrors.message = formValidation.errors.messageMinLength;
-    }
+    const name = String(data.get('name') ?? '').trim()
+    const email = String(data.get('email') ?? '').trim()
+    const message = String(data.get('message') ?? '').trim()
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+    const subject = `Message from ${name}`
+    const body = `${message}\n\n${name}\n${email}`
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+    window.location.href = `mailto:${contactConfig.email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`
 
-    if (!validateForm()) return;
-
-    // Create mailto link with form data
-    const mailtoLink = `mailto:${contactConfig.email}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    )}`;
-
-    // Open email client
-    window.location.href = mailtoLink;
-
-    // Show success message and reset form
-    setSubmitStatus('success');
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    
-    // Reset success message after configured duration
-    setTimeout(() => setSubmitStatus('idle'), successMessage.duration);
-  };
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
-    // Clear error when user starts typing
-    if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
-    }
-  };
+    // The form is not cleared: if no email app opens, the text is still there.
+    setOpened(true)
+  }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -30 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className="space-y-6">
-        {/* Name Field */}
-        <FormField
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="name" className="text-neutral font-medium">
+          {formCopy.name}
+        </label>
+        <input
           id="name"
-          label={formLabels.name}
-          type="text"
           name="name"
-          value={formData.name}
-          onChange={handleChange}
-          onFocus={() => setFocusedField('name')}
-          onBlur={() => setFocusedField(null)}
-          placeholder={formPlaceholders.name}
-          error={errors.name}
-          isFocused={focusedField === 'name'}
-          icon="user"
-        />
-
-        {/* Email Field */}
-        <FormField
-          id="email"
-          label={formLabels.email}
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          onFocus={() => setFocusedField('email')}
-          onBlur={() => setFocusedField(null)}
-          placeholder={formPlaceholders.email}
-          error={errors.email}
-          isFocused={focusedField === 'email'}
-          icon="mail"
-        />
-
-        {/* Subject Field */}
-        <FormField
-          id="subject"
-          label={formLabels.subject}
           type="text"
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          onFocus={() => setFocusedField('subject')}
-          onBlur={() => setFocusedField(null)}
-          placeholder={formPlaceholders.subject}
-          error={errors.subject}
-          isFocused={focusedField === 'subject'}
-          icon="message"
+          autoComplete="name"
+          aria-invalid={Boolean(errors.name)}
+          aria-describedby={errors.name ? 'name-error' : undefined}
+          onChange={clearError('name')}
+          className={`${fieldClass} ${errors.name ? errorFieldClass : ''}`}
         />
-
-        {/* Message Field */}
-        <FormField
-          id="message"
-          label={formLabels.message}
-          type="textarea"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          onFocus={() => setFocusedField('message')}
-          onBlur={() => setFocusedField(null)}
-          placeholder={formPlaceholders.message}
-          error={errors.message}
-          isFocused={focusedField === 'message'}
-          rows={8}
-        />
-
-        {/* Submit Button */}
-        <motion.button
-          type="button"
-          onClick={handleSubmit}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full py-4 px-6 rounded-xl font-semibold text-black transition-all flex items-center justify-center gap-2"
-          style={{
-            background: 'linear-gradient(135deg, var(--gradient-start), var(--gradient-end))',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-          }}
-        >
-          <Send className="w-5 h-5" />
-          Send Message
-        </motion.button>
-
-        {/* Success Message */}
-        {submitStatus === 'success' && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center gap-3"
-          >
-            <CheckCircle className="w-5 h-5 text-green-500" />
-            <p className="text-sm font-medium text-green-500">
-              {successMessage.text}
-            </p>
-          </motion.div>
+        {errors.name && (
+          <p id="name-error" role="alert" className="text-sm text-red-500">
+            {errors.name}
+          </p>
         )}
       </div>
-    </motion.div>
-  );
-};
 
-export default ContactForm;
+      <div className="flex flex-col gap-2">
+        <label htmlFor="email" className="text-neutral font-medium">
+          {formCopy.email}
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? 'email-error' : undefined}
+          onChange={clearError('email')}
+          className={`${fieldClass} ${errors.email ? errorFieldClass : ''}`}
+        />
+        {errors.email && (
+          <p id="email-error" role="alert" className="text-sm text-red-500">
+            {errors.email}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="message" className="text-neutral font-medium">
+          {formCopy.message}
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          rows={7}
+          aria-invalid={Boolean(errors.message)}
+          aria-describedby={errors.message ? 'message-error' : undefined}
+          onChange={clearError('message')}
+          className={`${fieldClass} resize-y ${errors.message ? errorFieldClass : ''}`}
+        />
+        {errors.message && (
+          <p id="message-error" role="alert" className="text-sm text-red-500">
+            {errors.message}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <button
+          type="submit"
+          className="bg-accent text-primary rounded-md px-6 py-3 font-semibold transition-opacity hover:opacity-90"
+        >
+          {formCopy.submit}
+        </button>
+        <p className="text-primary-content text-sm">{formCopy.hint}</p>
+      </div>
+
+      {opened && (
+        <p role="status" className="text-neutral">
+          Your email app should have opened with the message ready to send. If it did not, write to{' '}
+          <a
+            href={`mailto:${contactConfig.email}`}
+            className="decoration-accent underline decoration-2 underline-offset-4"
+          >
+            {contactConfig.email}
+          </a>
+          .
+        </p>
+      )}
+    </form>
+  )
+}
+
+export default ContactForm

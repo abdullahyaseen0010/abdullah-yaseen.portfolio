@@ -1,115 +1,90 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { 
-  Code2, 
-  Rocket, 
-  TrendingUp, 
-  Sparkles
-} from 'lucide-react'
-import { floatingIconsData } from './heroData'
+import { motion, useReducedMotion } from 'framer-motion'
 
-const icons = [Code2, Rocket, TrendingUp, Sparkles]
+/*
+  A 3x3 block of eight-pointed-star tiles, the kind of geometry found in
+  tilework across Bahawalpur and Multan. Each star is two overlapping squares.
+  It draws in once on load (the page's single animated moment), then stays still.
+  The centre tile is the accent; everything else is quiet.
+*/
+
+const TILE = 100
+const CENTER = TILE / 2
+const RADIUS = 36
+const HALF = RADIUS / Math.SQRT2
+
+const f = (n: number) => n.toFixed(2)
+
+const square = `M${f(CENTER - HALF)} ${f(CENTER - HALF)}H${f(CENTER + HALF)}V${f(CENTER + HALF)}H${f(CENTER - HALF)}Z`
+const diamond = `M${CENTER} ${CENTER - RADIUS}L${CENTER + RADIUS} ${CENTER}L${CENTER} ${CENTER + RADIUS}L${CENTER - RADIUS} ${CENTER}Z`
+
+const tiles = Array.from({ length: 9 }, (_, i) => ({
+  i,
+  x: (i % 3) * TILE,
+  y: Math.floor(i / 3) * TILE,
+  isCenter: i === 4,
+  shaded: (Math.floor(i / 3) + (i % 3)) % 2 === 0,
+}))
 
 const HeroVisual = () => {
+  const reduceMotion = useReducedMotion()
+
+  const draw = (delay: number) => ({
+    initial: reduceMotion ? false : { pathLength: 0, opacity: 0 },
+    animate: { pathLength: 1, opacity: 1 },
+    transition: { duration: 1.1, delay, ease: [0.22, 1, 0.36, 1] as const },
+  })
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, delay: 0.5 }}
-      className="relative flex min-h-[400px] items-center justify-center lg:min-h-[600px]"
-    >
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-        style={{ willChange: 'transform' }}
-        className="absolute inset-0 flex items-center justify-center"
+    <div className="hidden justify-self-end md:block">
+      <svg
+        viewBox="-4 -4 308 308"
+        aria-hidden="true"
+        focusable="false"
+        className="w-full max-w-[420px]"
       >
-        <div className="from-accent/30 via-secondary/20 to-accent/30 h-[300px] w-[300px] rounded-full bg-gradient-to-br lg:h-[450px] lg:w-[450px]" />
-      </motion.div>
+        {tiles.map(({ i, x, y, isCenter, shaded }) => {
+          // Centre tile draws last so the eye lands on it.
+          const delay = isCenter ? 1.3 : 0.15 + i * 0.1
+          const strokeClass = isCenter ? 'stroke-accent' : 'stroke-primary-content'
+          const strokeWidth = isCenter ? 2.5 : 1.25
 
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-        style={{ willChange: 'transform' }}
-        className="absolute inset-0"
-      >
-        <div className="relative h-full w-full">
-          {floatingIconsData.map((iconData, index) => {
-            const Icon = icons[index]
-            return (
-              <motion.div
-                key={index}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: iconData.delay + 1, duration: 0.5 }}
-                style={iconData.position}
-                className="absolute"
-              >
-                <motion.div
-                  animate={{
-                    y: [0, -10, 0],
-                    rotate: [-10, 10, -10],
-                  }}
-                  transition={{
-                    duration: 3 + index,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                  className="bg-secondary border-border text-accent rounded-xl border p-3 shadow-lg"
-                >
-                  <Icon className="h-6 w-6" />
-                </motion.div>
-              </motion.div>
-            )
-          })}
-        </div>
-      </motion.div>
-
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1, type: 'spring', stiffness: 200, damping: 15 }}
-        className="from-accent to-secondary relative z-10 flex h-[200px] w-[200px] items-center justify-center rounded-full bg-gradient-to-br shadow-2xl lg:h-[280px] lg:w-[280px]"
-      >
-        <motion.div
-          animate={{
-            opacity: [0.4, 0.7, 0.4],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          style={{ willChange: 'opacity' }}
-          className="from-accent to-secondary absolute inset-0 rounded-full bg-gradient-to-br blur-xl"
-        />
-
-        <div className="bg-primary relative flex h-[180px] w-[180px] items-center justify-center rounded-full lg:h-[260px] lg:w-[260px]">
-          <motion.div
-            animate={{ rotate: [0, 360] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-            className="text-accent"
-          >
-            <Code2 className="h-20 w-20 lg:h-28 lg:w-28" />
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {[1, 2, 3].map((i) => (
-        <motion.div
-          key={i}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.1 }}
-          transition={{ delay: 1 + i * 0.2 }}
-          className="border-accent absolute rounded-full border-2"
-          style={{
-            width: `${200 + i * 80}px`,
-            height: `${200 + i * 80}px`,
-          }}
-        />
-      ))}
-    </motion.div>
+          return (
+            <g key={i} transform={`translate(${x} ${y})`}>
+              <rect
+                width={TILE}
+                height={TILE}
+                strokeWidth={1}
+                className={`stroke-border ${shaded ? 'fill-secondary' : 'fill-none'}`}
+              />
+              <motion.path
+                d={square}
+                fill="none"
+                strokeWidth={strokeWidth}
+                strokeLinejoin="round"
+                className={strokeClass}
+                {...draw(delay)}
+              />
+              <motion.path
+                d={diamond}
+                fill="none"
+                strokeWidth={strokeWidth}
+                strokeLinejoin="round"
+                className={strokeClass}
+                {...draw(delay + 0.1)}
+              />
+              <circle
+                cx={CENTER}
+                cy={CENTER}
+                r={isCenter ? 9 : 6}
+                className={isCenter ? 'fill-accent' : 'fill-primary-content'}
+              />
+            </g>
+          )
+        })}
+      </svg>
+    </div>
   )
 }
 
