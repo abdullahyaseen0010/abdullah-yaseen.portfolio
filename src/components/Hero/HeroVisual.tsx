@@ -3,100 +3,67 @@
 import { motion, useReducedMotion } from 'framer-motion'
 
 /*
-  A pixel-art bat drawn from the same eight-pointed-star tile used
-  elsewhere on the site (the Bahawalpur/Multan tilework motif) — each
-  "pixel" of the bat is a full star tile, empty cells are just skipped.
-  It draws in once on load (the page's single animated moment), then
-  stays still.
+  A chunky pixel-art bat, drawn as a bitmap of solid square "pixels" rather
+  than vector paths. It draws in once on load (the page's single animated
+  moment, staggered pixel by pixel), then stays still. Two pixels near the
+  center are swapped to the accent color for eyes.
 */
 
-const TILE = 60
-const CENTER = TILE / 2
-const RADIUS = 22
-const HALF = RADIUS / Math.SQRT2
+const PIXEL = 40
+const COLS = 9
+const ROWS = 6
 
-const f = (n: number) => n.toFixed(2)
-
-const square = `M${f(CENTER - HALF)} ${f(CENTER - HALF)}H${f(CENTER + HALF)}V${f(CENTER + HALF)}H${f(CENTER - HALF)}Z`
-const diamond = `M${CENTER} ${CENTER - RADIUS}L${CENTER + RADIUS} ${CENTER}L${CENTER} ${CENTER + RADIUS}L${CENTER - RADIUS} ${CENTER}Z`
-
-// 1 = star tile (bat pixel), 0 = empty. 7 cols x 5 rows.
-const BAT_MASK = [
-  [1, 0, 0, 0, 0, 0, 1],
-  [1, 1, 0, 0, 0, 1, 1],
-  [1, 1, 1, 0, 1, 1, 1],
-  [0, 1, 1, 1, 1, 1, 0],
-  [0, 0, 1, 0, 1, 0, 0],
+// 1 = filled pixel, 0 = empty. Symmetric left/right.
+const BAT_MAP = [
+  [0, 1, 0, 0, 0, 0, 0, 1, 0],
+  [1, 1, 1, 0, 0, 0, 1, 1, 1],
+  [0, 1, 1, 1, 1, 1, 1, 1, 0],
+  [0, 0, 1, 1, 1, 1, 1, 0, 0],
+  [0, 1, 1, 1, 1, 1, 1, 1, 0],
+  [1, 1, 0, 1, 1, 1, 0, 1, 1],
 ]
 
-const CENTER_CELL = { row: 2, col: 3 }
+// Row/col of the two eye pixels (within BAT_MAP, both currently filled).
+const EYES = new Set(['3-3', '3-5'])
 
-const tiles = BAT_MASK.flatMap((cols, row) =>
-  cols
-    .map((on, col) => ({ row, col, on }))
-    .filter((t) => t.on === 1)
-).map((t, i) => ({
-  i,
-  x: t.col * TILE,
-  y: t.row * TILE,
-  isCenter: t.row === CENTER_CELL.row && t.col === CENTER_CELL.col,
-  shaded: (t.row + t.col) % 2 === 0,
-}))
+const pixels = BAT_MAP.flatMap((row, r) =>
+  row.map((on, c) => ({ r, c, on: on === 1, isEye: EYES.has(`${r}-${c}`) }))
+).filter((p) => p.on)
 
 const HeroVisual = () => {
   const reduceMotion = useReducedMotion()
 
-  const draw = (delay: number) => ({
-    initial: reduceMotion ? false : { pathLength: 0, opacity: 0 },
-    animate: { pathLength: 1, opacity: 1 },
-    transition: { duration: 1.1, delay, ease: [0.22, 1, 0.36, 1] as const },
+  const pop = (delay: number) => ({
+    initial: reduceMotion ? false : { scale: 0, opacity: 0 },
+    animate: { scale: 1, opacity: 1 },
+    transition: { duration: 0.35, delay, ease: [0.22, 1, 0.36, 1] as const },
   })
 
   return (
     <div className="hidden justify-self-end md:block">
       <svg
-        viewBox={`-4 -4 ${7 * TILE + 8} ${5 * TILE + 8}`}
+        viewBox={`-4 -4 ${COLS * PIXEL + 8} ${ROWS * PIXEL + 8}`}
         aria-hidden="true"
         focusable="false"
-        className="w-full max-w-[420px]"
+        className="w-full max-w-[380px]"
       >
-        {tiles.map(({ i, x, y, isCenter, shaded }) => {
-          // Centre tile draws last so the eye lands on it.
-          const delay = isCenter ? 1.3 : 0.15 + i * 0.08
-          const strokeClass = isCenter ? 'stroke-accent' : 'stroke-primary-content'
-          const strokeWidth = isCenter ? 2.5 : 1.25
+        {pixels.map(({ r, c, isEye }) => {
+          // Raster order for the wings/body, eyes pop in last.
+          const delay = isEye ? 1.0 : 0.1 + (r * COLS + c) * 0.015
+          const cx = c * PIXEL + PIXEL / 2
+          const cy = r * PIXEL + PIXEL / 2
 
           return (
-            <g key={i} transform={`translate(${x} ${y})`}>
-              <rect
-                width={TILE}
-                height={TILE}
-                strokeWidth={1}
-                className={`stroke-border ${shaded ? 'fill-secondary' : 'fill-none'}`}
-              />
-              <motion.path
-                d={square}
-                fill="none"
-                strokeWidth={strokeWidth}
-                strokeLinejoin="round"
-                className={strokeClass}
-                {...draw(delay)}
-              />
-              <motion.path
-                d={diamond}
-                fill="none"
-                strokeWidth={strokeWidth}
-                strokeLinejoin="round"
-                className={strokeClass}
-                {...draw(delay + 0.1)}
-              />
-              <circle
-                cx={CENTER}
-                cy={CENTER}
-                r={isCenter ? 6 : 4}
-                className={isCenter ? 'fill-accent' : 'fill-primary-content'}
-              />
-            </g>
+            <motion.rect
+              key={`${r}-${c}`}
+              x={c * PIXEL}
+              y={r * PIXEL}
+              width={PIXEL}
+              height={PIXEL}
+              style={{ transformOrigin: `${cx}px ${cy}px` }}
+              className={isEye ? 'fill-accent' : 'fill-primary-content'}
+              {...pop(delay)}
+            />
           )
         })}
       </svg>
