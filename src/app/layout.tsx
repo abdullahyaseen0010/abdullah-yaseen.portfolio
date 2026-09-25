@@ -36,9 +36,20 @@ export const metadata: Metadata = {
     template: '%s | Abdullah Yaseen',
   },
   description: SITE_DESCRIPTION,
+  keywords: [
+    'Abdullah Yaseen',
+    'Full Stack Developer',
+    'Next.js Developer',
+    'React Developer Pakistan',
+    'Frontend Developer Bahawalpur',
+  ],
   authors: [{ name: 'Abdullah Yaseen', url: SITE_URL }],
   creator: 'Abdullah Yaseen',
   applicationName: 'Abdullah Yaseen Portfolio',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
   robots: {
     index: true,
     follow: true,
@@ -115,8 +126,8 @@ const personJsonLd = {
 // Escape "<" so JSON-LD can never break out of its <script> tag.
 const toJsonLd = (data: object) => JSON.stringify(data).replace(/</g, '\\u003c')
 
-// Runs before paint so the saved theme is applied with no flash.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='dark'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`
+// Runs before paint so the saved theme is applied with no flash. Defaults to light.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`
 
 export default function RootLayout({
   children,
@@ -124,7 +135,7 @@ export default function RootLayout({
   children: ReactNode
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
